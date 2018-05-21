@@ -1,0 +1,13 @@
+#! /usr/bin/env sh
+redpage=$(redget "https://old.reddit.com/r/opendirectories")
+for i in $redpage; do
+    lynx -dump -listonly "$i" | \
+    grep -v javascript | \
+    grep -v reddit.com | \
+    grep -v "file://" | \
+    cut -d. -f2- | \
+    tr -d ' ' | \
+    sed 's|References||g' | \
+    grep "tp" | \
+    sort -u
+done

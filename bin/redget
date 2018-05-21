@@ -1,0 +1,15 @@
+#! /usr/bin/env sh
+URL=$1
+
+/usr/bin/wget -q -O - "$URL" | \
+    hxnormalize -e -i 0 -L -l 300 -x | \
+    hxselect -i -c 'div.entry' | \
+    lynx -dump -listonly -stdin | \
+    grep -v javascript | \
+    grep -v reddit.com | \
+    grep -v "file://" | \
+    cut -d. -f2- | \
+    tr -d ' ' | \
+    sed 's|References||g' | \
+    grep "tp" | \
+    sort -u
